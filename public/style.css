@@ -1,0 +1,163 @@
+/* Genel ayarlar */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Navbar ayarları */
+.navbar {
+    width: 100%;
+    background-color: #2196F3;
+    padding: 15px 20px;
+    color: white;
+    display: flex;
+    justify-content: flex-start; /* Buton sola hizalanacak */
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 20px; /* Markayı butondan biraz ayırıyoruz */
+}
+
+.navbar-institution {
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 200px; /* Markayı butondan biraz ayırıyoruz */
+}
+
+.navbar-logo {
+    width: 120px;  /* İstediğiniz genişliği ayarlayın */
+    height: auto; /* Yüksekliği otomatik ayarlamak için */
+}
+
+.toggle-sidebar {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Sidebar ayarları */
+.sidebar {
+    background-color: #333;
+    color: white;
+    width: 250px;
+    height: 100%;
+    padding-top: 100px; /* Navbar'ın altında başlaması için */
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: all 0.3s;
+}
+
+.sidebar-closed {
+    width: 0;
+    padding: 60px 0 0 0;
+    overflow: hidden;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 15px 20px;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.sidebar ul li:hover {
+    background-color: #575757;
+}
+
+/* Main content ayarları */
+.main-content {
+    margin-left: 300px;
+    padding: 100px 20px; /* Navbar ve Sidebar için boşluk bırakıyoruz */
+    transition: all 0.3s;
+}
+
+.sidebar-closed ~ .main-content {
+    margin-left: 0;
+}
+
+.login-button {
+    background-color: white; /* Giriş butonu arka plan rengi */
+    color: #2196F3; /* Giriş butonu metin rengi */
+    border: none; /* Kenarlık yok */
+    padding: 10px 15px; /* İç boşluk */
+    cursor: pointer; /* Fare ile üzerine gelince imleç değişsin */
+    border-radius: 5px; /* Kenarları yuvarlak yap */
+    display: flex; /* Flexbox kullanarak ikon ve metni yan yana hizalayalım */
+    align-items: center; /* Dikey merkezleme */
+    margin-left: 200px;
+}
+
+.login-button i {
+    margin-right: 5px; /* İkon ile metin arasında boşluk */
+}
+
+.login-button:hover {
+    background-color: #e0e0e0; /* Üzerine gelindiğinde arka plan rengi değişsin */
+}
+
+.login-page {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 500px;
+    height: 100%;
+    margin-left: 300px;
+    margin-top: 150px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-page label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.login-page input {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.login-page button {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.login-page button:hover {
+    background-color: #1976D2;
+}
+
+.button-container {
+    display: flex; /* Flexbox düzeni */
+    justify-content:flex-end; /* Boşlukları butonlar arasında paylaştırır */
+}
+
+

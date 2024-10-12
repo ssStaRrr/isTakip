@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar and Sidebar Example</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <button class="toggle-sidebar" onclick="toggleSidebar()">☰</button>
+        <span class="navbar-brand">İş Takip Programı</span>
+        <span class="navbar-institution">ARNAVUTKÖY BELEDİYESİ</span>
+        <img src="/arnBelediye.png" alt="Logo" class="navbar-logo" />
+        <button class="login-button" onclick="showLoginPage()">
+            <i class="fas fa-user"></i> Giriş
+        </button>        
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Projeler</a></li>
+            <li><a href="#">Görevler</a></li>
+            <li><a href="#">Takvim</a></li>
+            <li><a href="#">Raporlar</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        <h1>Ana Sayfa</h1>
+        <p>İş takip programı ile ilgili içerik buraya gelir.</p>
+    </div>
+
+    <!-- Login Page -->
+    <div class="login-page" id="login-page" style="display: none;">
+        <h2>Giriş Yap</h2>
+        <form id="login-form" onsubmit="event.preventDefault();">
+            <label for="username">Kullanıcı Adı:</label>
+            <input type="text" id="username" required><br><br>
+            <label for="password">Şifre:</label>
+            <input type="password" id="password" required><br><br>
+            <div class="button-container"></div>
+                <button type="submit">Giriş</button>
+                <button type="button" onclick="goBack()">Geri</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("sidebar-closed");
+        }
+        
+        function showLoginPage() {
+            // Ana içeriği gizle
+            document.getElementById("main-content").style.display = "none"; 
+            // Giriş sayfasını göster
+            document.getElementById("login-page").style.display = "block"; 
+        }
+
+        function goBack() {
+            // Giriş sayfasını gizle
+            document.getElementById("login-page").style.display = "none"; 
+            // Ana içeriği göster
+            document.getElementById("main-content").style.display = "block"; 
+        }
+    </script>
+</body>
+
+</html>
