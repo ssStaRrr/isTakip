@@ -50,7 +50,7 @@ body {
 
 /* Sidebar ayarları */
 .sidebar {
-    background-color: #333;
+    background-color: #333 ;
     color: white;
     width: 250px;
     height: 100%;
@@ -158,6 +158,30 @@ body {
 .button-container {
     display: flex; /* Flexbox düzeni */
     justify-content:flex-end; /* Boşlukları butonlar arasında paylaştırır */
+    gap: 10px;                 /* Butonlar arasında 10px boşluk */
+    margin-bottom: 10px;
 }
+
+
+/* ADMİN PANEL SAYFASI */
+.navbar-adminPanel {
+    width: 100%;
+    background-color: #2196F3;
+    padding: 15px 20px;
+    color: black;   
+    display: flex;
+    justify-content: center; /* Ortalıyor */
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.navbar-brand-adminPanel {
+    font-size: 24px;
+    font-weight: bold;
+}
+
 
 

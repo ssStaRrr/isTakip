@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+
+    <body>
+        <%- include('partials/navbar') %> <!-- Navbar partial şablonu -->
+            <%- include('partials/sidebar') %>
+
+                <!-- Login Page -->
+                <div class="login-page" id="login-page" style="display: block;">
+                    <h2>Giriş Yap</h2>
+                    <form id="login-form" onsubmit="login(event)">
+                        <label for="username">Kullanıcı Adı:</label>
+                        <input type="text" id="username" required><br><br>
+                        <label for="password">Şifre:</label>
+                        <input type="password" id="password" required><br><br>
+                        <div class="button-container">
+                            <button type="submit">Giriş</button>
+                            <button type="button" onclick="goBack()">Geri</button>
+                        </div>
+                    </form>
+                    <div class="alert alert-success" id="alert-success" role="alert" style="display: none;">
+                        A simple success alert—check it out!
+                    </div>
+                </div>
+
+                <script>
+                    function toggleSidebar() {
+                        const sidebar = document.getElementById("sidebar");
+                        sidebar.classList.toggle("sidebar-closed");
+                    }
+
+                    function showLoginPage() {
+                        // Giriş sayfasını göster
+                        document.getElementById("login-page").style.display = "block";
+                    }
+
+                    function goBack() {
+                        // Giriş sayfasını gizle
+                        document.getElementById("login-page").style.display = "none";
+                    }
+
+                    function login(event) {
+                        event.preventDefault(); // Prevent form from submitting and refreshing the page  
+                        const username = document.getElementById("username").value
+                        const password = document.getElementById("password").value
+                        const alertSucces = document.getElementById("alert-success")
+                        const loginButton = document.getElementById("login-button")
+                        fetch("/login", {
+                            method: "POST", // Use POST to send data
+                            headers: {
+                                "Content-Type": "application/json" // Send data in JSON format
+                            },
+                            body: JSON.stringify({ username, password }) // Send the username and password
+                        })
+                            .then(res => {
+                                if (res.status == 404) {
+                                    // İlk olarak res.json()'u return ederek çözümlenmiş JSON verisine erişmemiz gerekiyor
+                                    return res.json().then(data => {
+                                        alertSucces.classList.replace("alert-success", "alert-danger"); // 'alert-success' sınıfını 'alert-danger' ile değiştir
+                                        alertSucces.innerText = `${data.username} kullanıcısı için ${data.message}`; // data.username'e eriştik
+                                        alertSucces.style.display = "block";
+                                    });
+                                } else if (res.status == 200) {
+                                    return res.json().then(data => {
+                                        alertSucces.classList.replace("alert-danger", "alert-success");
+                                        alertSucces.innerText = `${data.username} kullanıcısı için ${data.message}`;
+                                        alertSucces.style.display = "block";
+
+                                        loginButton.innerText = `${data.username}`
+                                    });
+
+                                }
+                            })
+                            .catch(err => {
+                                console.log(err)
+                            })
+                    };
+
+                </script>
+    </body>
+
+</html>

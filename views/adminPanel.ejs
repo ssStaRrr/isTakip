@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %> <!-- CSS ve meta tagları burada olacak -->
+
+    <body>
+        <!-- Navbar -->
+        <nav class="navbar-adminPanel">
+            <div class="navbar-brand-adminPanel">İş Takip Programı</div>
+        </nav>
+
+        <!-- Login Form -->
+        <div class="login-page" id="login-page" style="margin-top: 150px; margin-left: 37%;">
+            <h2>Admin Panel Giriş</h2>
+            <form id="login-form" onsubmit="login(event)">
+                <label for="username">Kullanıcı Adı:</label>
+                <input type="text" id="username" required><br><br>
+                <label for="password">Şifre:</label>
+                <input type="password" id="password" required><br><br>
+                <div class="button-container">
+                    <button type="submit">Giriş</button>
+                </div>
+            </form>
+            <div class="alert alert-success" id="alert-success" role="alert" style="display: none;">
+                A simple success alert—check it out!
+            </div>
+        </div>
+
+        <script>
+            function login(event) {
+                event.preventDefault(); // Formun sayfayı yenilemesini engelle
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+                const alertSucces = document.getElementById("alert-success");
+
+                fetch("/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ username, password })
+                })
+                    .then(res => {
+                        if (res.status == 200) {
+                            return res.json().then(data => {
+                                alertSucces.classList.replace("alert-danger", "alert-success");
+                                alertSucces.innerText = `${data.username} kullanıcısı için giriş başarılı`;
+                                alertSucces.style.display = "block";
+
+                                setTimeout(() => {
+                                    window.location.href = "/adminPanel_Anasayfa";
+                                }, 3000) // Başarılı login sonrası yönlendirme
+                            });
+                        } else {
+                            return res.json().then(data => {
+                                alertSucces.classList.replace("alert-success", "alert-danger");
+                                alertSucces.innerText = `Hata: Kullanıcı adı veya şifre hatalı olduğu için ${data.message}`;
+                                alertSucces.style.display = "block";
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
+
+        </script>
+    </body>
+
+</html>
