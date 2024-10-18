@@ -4,6 +4,7 @@ const login = async(req,res) => {
     let {username, password} = req.body
     let admin = await Admin.findOne({username:username, password:password})
     if(admin){
+        req.session.username = username;
         res.status(200).json({
             username,   
             message: "Giris Başarılı"

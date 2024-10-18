@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+
+<style>
+    /* Container için stil */
+    .container {
+        margin: 50px auto;
+        text-align: center;
+        width: 300px;
+    }
+
+    /* Butonlar için stil */
+    .container button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        background-color: #4CAF50; /* Yeşil buton */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    /* Hover sırasında buton rengi */
+    .container button:hover {
+        background-color: #45a049;
+    }
+</style>
+
+<body>
+    <%- include('partials/navbar') %>   <!-- Navbar partial şablonu -->
+    <%- include('partials/sidebar') %>
+
+    <div class="container" style="margin-top: 250px;">
+        <!-- Butonlar -->
+        <button onclick="showPersonnelList()">Personel Listesi</button>
+        <button onclick="addPersonnel()">Personel Ekle</button>
+        <button onclick="deletePersonnel()">Personel Sil</button>
+    </div>
+
+    <script>
+        function showPersonnelList() {
+            alert('Personel listesi görüntülenecek.');
+        }
+
+        function addPersonnel() {
+            alert('Personel ekleme formu açılacak.');
+        }
+
+        function deletePersonnel() {
+            alert('Personel silme işlemi başlatılacak.');
+        }
+    </script>
+
+</body>
+</html>

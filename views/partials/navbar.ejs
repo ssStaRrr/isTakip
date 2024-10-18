@@ -7,4 +7,28 @@
     <button class="login-button" id="login-button" onclick="showLoginPage()">
         <i class="fas fa-user"></i> Giriş
     </button>
+
+    <script>
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("sidebar-closed");
+        }
+
+        window.onload = function() {
+            fetch('/check-session')
+                .then(response => response.json())
+                .then(data => {
+                    const loginButton = document.getElementById("login-button");
+                    if (data.loggedIn) {
+                        // Eğer kullanıcı giriş yapmışsa, kullanıcının ismini göster
+                        loginButton.innerText = `${data.username}`;
+                    }
+                })
+                .catch(error => {
+                    console.error("Oturum kontrolü sırasında hata oluştu:", error);
+                });
+        }
+    </script>
+    
 </div>

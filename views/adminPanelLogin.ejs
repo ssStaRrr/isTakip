@@ -5,7 +5,7 @@
     <body>
         <!-- Navbar -->
         <nav class="navbar-adminPanel">
-            <div class="navbar-brand-adminPanel">İş Takip Programı</div>
+            <div class="navbar-brand-adminPanel">İŞ TAKİP PROGRAMI - ADMİN PANELİ</div>
         </nav>
 
         <!-- Login Form -->
@@ -45,9 +45,9 @@
                                 alertSucces.classList.replace("alert-danger", "alert-success");
                                 alertSucces.innerText = `${data.username} kullanıcısı için giriş başarılı`;
                                 alertSucces.style.display = "block";
-
+                                
                                 setTimeout(() => {
-                                    window.location.href = "/adminPanel_Anasayfa";
+                                    window.location.href = "/adminHome";
                                 }, 3000) // Başarılı login sonrası yönlendirme
                             });
                         } else {
