@@ -3,7 +3,9 @@ const app = express();
 const session = require('express-session');
 const {connectDB} = require("./DB/connectDB")
 const path = require('path');
+
 const routerAdmin = require("./route/admin")
+const routerPersonel = require("./route/personel")
 const Admin = require("./model/admin")
 
 // Middleware
@@ -47,11 +49,16 @@ connectDB()
             res.json({ loggedIn: false });
         }
     });
+
+    
+   
     
     app.get("/", (req,res) => {
         res.sendFile(path.join(publicDirectoryPath, "home.html"))
     })
-    app.post("/login", routerAdmin)
+    app.use("/", routerAdmin)
+    app.use("/api/personel", routerPersonel)
+
     app.get("/login", (req,res) => {
         res.render("login.ejs")
     })
@@ -64,3 +71,4 @@ connectDB()
     app.get("/personel", (req,res) => {
         res.render("personel.ejs")
     })
+
