@@ -1,9 +1,12 @@
 const Personel = require("../model/personel")
+const Department = require("../model/department")
 
 const addPersonel = async(req,res) => {
     const personel = req.body
-    personel.department = "670d61f2fdebb181fcdb731f"
- 
+    console.log(personel)
+    const department = await Department.findOne({name: personel.department})
+
+    personel.department = department._id
     const newPersonel = new Personel(personel)
     await newPersonel.save()
 
@@ -11,12 +14,25 @@ const addPersonel = async(req,res) => {
 }
 
 const getPersonelList = async(req,res) => {
-    const personelList = await Personel.find()
-
+    const personelList = await Personel.find().populate('department', 'name');
+    console.log(personelList)
     res.status(200).json(personelList)
+}
+
+const selectPersonel = async(req,res) => {
+    const personelsInfo = req.query
+    const personels = await Personel.find(personelsInfo)
+    res.status(200).json(personels)
+}
+
+const deletePersonel = async(req,res) => {
+    const _id = req.body
+    const personel = await Personel.findByIdAndDelete(_id)
 }
 
 module.exports = {
     addPersonel,
-    getPersonelList
+    getPersonelList,
+    selectPersonel,
+    deletePersonel
 }

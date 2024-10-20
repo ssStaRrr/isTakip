@@ -105,10 +105,11 @@
         .container-personel-delete div {
             display: flex;
             padding-bottom: 10px;
-            width: 50%; 
+            width: 50%;
         }
+
         .container-personel-delete label {
-            width:5%;
+            width: 5%;
             margin-right: 10px;
             font-weight: bold;
             text-align: left;
@@ -118,13 +119,14 @@
             width: 50%;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;    
+            font-size: 16px;
         }
+
         .container-personel-delete-search {
             width: 5%;
             display: flex;
             justify-content: flex-end;
-            padding-right: 5%;   
+            padding-right: 5%;
         }
     </style>
 
@@ -186,7 +188,12 @@
                             </div>
                             <div>
                                 <label for="department">Departman</label>
-                                <input type="text" id="department" placeholder="Departman" required>
+                                <select id="department" name="department">
+                                    <option value="İnsan Kaynakları">İnsan Kaynakları</option>
+                                    <option value="Bilgi İşlem">Bilgi İşlem</option>
+                                    <option value="Personel Birimi">Personel Birimi</option>
+                                </select>
+                                <!-- <input type="text" id="department" placeholder="Departman" required> -->
                             </div>
                             <div>
                                 <label for="position">Pozisyon</label>
@@ -214,7 +221,7 @@
                             <input type="text" placeholder="soyisim">
                         </div>
                         <div class="container-personel-delete-search">
-                            <button type="submit"> ARA </button>
+                            <button type="submit" onclick="searchPersonel(event)"> ARA </button>
                         </div>
                     </div>
                 </div>
@@ -240,13 +247,13 @@
                                 const row = document.createElement("tr")
 
                                 row.innerHTML = `
-                        <td>${index + 1}</td>
-                        <td>${personel.name}</td>
-                        <td>${personel.surname}</td>
-                        <td>${personel.phoneNumber}</td>
-                        <td>${personel.mail}</td>
-                        <td>${personel.department}</td>
-                    `
+                                    <td>${index + 1}</td>
+                                    <td>${personel.name}</td>
+                                    <td>${personel.surname}</td>
+                                    <td>${personel.phoneNumber}</td>
+                                    <td>${personel.mail}</td>
+                                    <td>${personel.department.name}</td>
+                                `
                                 tableBody.appendChild(row)
                             });
                         })
@@ -261,10 +268,10 @@
                     }
 
                     let submitPersonnel = async (event) => {
+                        event.preventDefault()
+
                         const personelSummary = document.querySelector(".personel-summary")
                         personelSummary.innerHTML = ""
-
-                        event.preventDefault()
 
                         formData = {
                             name: document.getElementById("name").value,
@@ -307,7 +314,99 @@
                         personelContainer.style.display = "none"
                         personelList.style.display = "none"
                         personelDeleteContainer.style = "display: flex; flex-direction: column; align-items: flex-start"
-                    }   
+                    }
+
+                    let searchPersonel = async (e) => {
+                        e.preventDefault()
+
+                        let inputs = personelDeleteContainer.querySelectorAll("input")
+                        let inputValues = []
+                        let name, surname;
+
+                        inputs.forEach((input, index) => {
+                            if (index == 0) name = input.value
+                            if (index == 1) surname = input.value
+                        })
+                        const response = await fetch(`api/personel/selectPersonel?name=${name}&surname=${surname}`)
+                        const data = await response.json()
+
+
+                        const div = document.createElement("div")
+                        const tbody = document.createElement("tbody")
+
+                        data.forEach((personel, index) => {
+                            const tr = document.createElement("tr");
+
+                            const checkBox = document.createElement("td")
+                            const tdName = document.createElement("td");
+                            const tdSurname = document.createElement("td");
+                            const tdPhoneNumber = document.createElement("td");
+                            const tdDepartment = document.createElement("td");
+                            const tdPosition = document.createElement("td");
+                            checkBox.innerHTML = `<input type="checkbox" name="_id" value="${personel._id}">`
+                            tdName.innerText = personel.name;
+                            tdSurname.innerText = personel.surname;
+                            tdPhoneNumber.innerText = personel.phoneNumber;
+                            tdDepartment.innerText = personel.department; 
+                            tdPosition.innerText = personel.position;
+
+                            // Tüm td'leri tr'ye ekle
+                            tr.append(checkBox, tdName, tdSurname, tdPhoneNumber, tdDepartment, tdPosition);
+                            // tr'yi tbody'ye ekle
+                            tbody.appendChild(tr);
+                        })
+                        div.innerHTML = `
+                            <form id="personel-delete-form">
+                                <table class="table table-stripred table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Seç</th>
+                                            <th>İsim</th>
+                                            <th>Soyisim</th>
+                                            <th>Telefon No</th>
+                                            <th>Departman</th>
+                                            <th>Birim</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </form> 
+                        `
+                        const table = div.querySelector("table")
+                        table.appendChild(tbody)
+                        const form = div.querySelector("#personel-delete-form")
+                        form.appendChild(table)
+                        // Sil butonunu oluştur ve forma ekle
+                        const deleteButton = document.createElement("button");
+                        deleteButton.type = "button";
+                        deleteButton.innerText = "Sil";
+
+                        form.appendChild(deleteButton)
+                        personelDeleteContainer.appendChild(div)
+
+                        deleteButton.onclick = async () => {
+                            // Seçili checkbox'ları bul
+                            const selectedPersonnel = [...form.querySelectorAll('input[name="_id"]:checked')];
+
+                            if (selectedPersonnel.length > 0) {
+                                const idsToDelete = selectedPersonnel.map(checkbox => checkbox.value);
+
+                                // API'ye seçili kişileri silmek için istekte bulun
+                                await fetch("/api/personel/deletePersonel", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ _id: idsToDelete })
+                                })
+
+                                // Başarılı bir silme işlemi sonrası UI'den silinen satırları kaldırın
+                                selectedPersonnel.forEach(checkbox => {
+                                    checkbox.closest('tr').remove();
+                                });
+                            } else {
+                                alert('Lütfen silmek için en az bir personel seçin.');
+                            }
+
+                        }
+                    }
                 </script>
 
     </body>
